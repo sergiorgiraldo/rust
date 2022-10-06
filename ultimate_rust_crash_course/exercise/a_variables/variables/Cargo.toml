@@ -1,0 +1,9 @@
+[package]
+name = "variables"
+version = "2.3.4"
+edition = "2021"
+authors = ["Sergio Rodrigues Giraldo sergio@giraldo.com.br"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
