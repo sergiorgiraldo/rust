@@ -2,5 +2,6 @@
 name = "d_control_flow_strings"
 version = "0.1.0"
 edition = "2021"
+authors = ["Sergio Rodrigues Giraldo sergio@giraldo.com.br"]
 
 [dependencies]
