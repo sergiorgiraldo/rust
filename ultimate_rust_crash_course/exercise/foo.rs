@@ -7,5 +7,4 @@ fn main(){
     fn d(s: &mut String) {
         s.insert_str(0, "Hi, ");
     }
-
 }
