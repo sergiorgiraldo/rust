@@ -29,9 +29,9 @@ fn main() {
     // Hint 2: `&&` is the boolean "AND" operator
     //DONE
     if e_ownership_references::eat(arg) {
-       println!("Might be bananas");
+        println!("Might be bananas");
     } else {
-       println!("Not bananas");
+        println!("Not bananas");
     }
 
     // Try running this program with "boat", "banana", and "grapes" as the arguments :-)
