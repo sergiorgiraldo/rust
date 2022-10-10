@@ -1,5 +1,7 @@
 // Silence some warnings so they don't distract from the exercise.
 #![allow(dead_code, unused_imports, unused_variables)]
+
+use bus::Bus;
 use crossbeam::channel;
 use std::thread;
 use std::panic;
@@ -95,11 +97,60 @@ fn main() {
     // Join the child threads for good hygiene.
     handle_a.join().unwrap();
     handle_b.join().unwrap();
-
+    
     // Challenge: Make two child threads and give them each a receiving end to a channel.  From the
     // main thread loop through several values and print each out and then send it to the channel.
     // On the child threads print out the values you receive. Close the sending side in the main
     // thread by calling `drop(tx)` (assuming you named your sender channel variable `tx`).  Join
     // the child threads.
+    let mut bus = Bus::new(10);
+    let mut receivera = bus.add_rx();
+    let mut receiverb = bus.add_rx();
+
+    let handle_challenge_a = thread::spawn(move || {
+        println!("receivera - {}", receivera.recv().unwrap());
+        // for i in 1..11 {
+        //     println!("receivera - {}", receivera.recv().expect(&i.to_string()));
+        // }
+    });
+    let handle_challenge_b = thread::spawn(move || {
+        for i in 1..10 {
+            println!("receiverb - {}", receiverb.recv().expect(&i.to_string()));
+        }
+    });
+
+    for i in 1..10 {
+        bus.broadcast(i);
+    }
+
+    handle_challenge_a.join().unwrap();
+    handle_challenge_b.join().unwrap();
+
+// --------
+    let (tx_n1, rx_n1) = channel::unbounded();
+    let (tx_n2, rx_n2) = channel::unbounded();
+
+    let handle_challenge_n1 = thread::spawn(move|| {
+        for msg in &rx_n1 {
+            println!("thread n1: Received {}", msg);
+        }
+        drop(rx_n1);
+    });
+    let handle_challenge_n2 = thread::spawn(move|| {
+        for msg in &rx_n2 {
+            println!("thread n2: Received {}", msg);
+        }
+        drop(rx_n2);
+    });
+
+    for i in 1..10 {
+        tx_n1.send(i).unwrap();
+        tx_n2.send(i).unwrap();
+    }
+
+    handle_challenge_n1.join().unwrap();
+    handle_challenge_n2.join().unwrap();
+    drop(tx_n1);
+    drop(tx_n2);
     println!("Main thread: Exiting.")
 }

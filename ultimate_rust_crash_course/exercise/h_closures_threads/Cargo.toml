@@ -8,3 +8,4 @@ authors = ["Sergio Rodrigues Giraldo sergio@giraldo.com.br"]
 
 [dependencies]
 crossbeam = "0.8.2"
+bus = "2.3.0"
