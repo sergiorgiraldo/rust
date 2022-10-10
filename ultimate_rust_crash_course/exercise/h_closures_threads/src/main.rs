@@ -130,17 +130,15 @@ fn main() {
     let (tx_n1, rx_n1) = channel::unbounded();
     let (tx_n2, rx_n2) = channel::unbounded();
 
-    let handle_challenge_n1 = thread::spawn(move|| {
-        for msg in &rx_n1 {
+    let handle_challenge_n1 = thread::spawn(|| {
+        for msg in rx_n1 {
             println!("thread n1: Received {}", msg);
         }
-        drop(rx_n1);
     });
-    let handle_challenge_n2 = thread::spawn(move|| {
-        for msg in &rx_n2 {
+    let handle_challenge_n2 = thread::spawn(|| {
+        for msg in rx_n2 {
             println!("thread n2: Received {}", msg);
         }
-        drop(rx_n2);
     });
 
     for i in 1..10 {
@@ -148,9 +146,9 @@ fn main() {
         tx_n2.send(i).unwrap();
     }
 
-    handle_challenge_n1.join().unwrap();
-    handle_challenge_n2.join().unwrap();
     drop(tx_n1);
     drop(tx_n2);
+    handle_challenge_n1.join().unwrap();
+    handle_challenge_n2.join().unwrap();
     println!("Main thread: Exiting.")
 }
