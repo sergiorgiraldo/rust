@@ -108,7 +108,12 @@ fn main() {
     let mut receiverb = bus.add_rx();
 
     let handle_challenge_a = thread::spawn(move || {
-        println!("receivera - {}", receivera.recv().unwrap());
+        loop{
+            let a = receivera.recv().unwrap();
+            println!("receivera - {}", a);
+            if a == 9 { break; }
+        }
+        //println!("receivera - {}", receivera.recv().unwrap());
         // for i in 1..11 {
         //     println!("receivera - {}", receivera.recv().expect(&i.to_string()));
         // }
