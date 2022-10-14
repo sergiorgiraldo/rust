@@ -50,8 +50,24 @@ fn main() {
     // Hint: .to_uppercase() is a method on `str` which returns a String
 
     let words = vec!["autobot", "beach", "car", "decepticon", "energon", "frothy"];
-    let transformed: Vec<String> = words.into_iter().map(|x| x.to_uppercase()).collect();
-    println!("Transformed: {:?}", transformed);
+    //i am using clone because if i dont it woulbe moved to the first iterator and then i cant make 
+    //the other ways of specifying the returned type
+    let transformed: Vec<String> = words.clone().into_iter().map(|x| x.to_uppercase()).collect();
+    println!("Transformed specific type: {:?}", transformed);
+    let transformed_generic: Vec<_> = words.clone().into_iter().map(|x| x.to_uppercase()).collect();
+    println!("Transformed dynamic type: {:?}", transformed_generic);
+    let transformed_turbofish = words.clone().into_iter().map(|x| x.to_uppercase()).collect::<Vec<String>>();
+    println!("Transformed turbofish in collect: {:?}", transformed_turbofish);
+    
+    //instead of clone, i can declare muttable and use drain
+    let mut words2 = vec!["autobot", "beach", "car", "decepticon", "energon", "frothy"];
+    let transformed_drain: Vec<String> = words2.drain(..).into_iter().map(|x| x.to_uppercase()).collect();
+    println!("Transformed specific type drain: {:?}", transformed_drain);
+    //see i can use words2 again but it is empty, drain consumes the values but keeps the collection
+    println!("After drain: {}", words2.len());
+    words2.push("mamacita");
+    let transformed_drain2: Vec<String> = words2.into_iter().map(|x| x.to_uppercase()).collect();
+    println!("Transformed after drain: {:?}", transformed_drain2);
 
     // Challenge:
     //
