@@ -1,14 +1,31 @@
+#[derive(Debug, Clone, Copy)]
 pub enum Cake {
     Chocolate,
     MapleBacon,
     Spice,
 }
 
+impl Default for Cake {
+    fn default() -> Self { Cake::MapleBacon}    
+}
+
+#[derive(Debug)]
 pub struct Party {
     pub at_restaurant: bool,
     pub num_people: u8,
     pub cake: Cake,
 }
+
+impl Default for Party {
+    fn default() -> Self { 
+        Party{
+            at_restaurant: true,
+            num_people: 8,
+            cake: Cake::Chocolate
+        }
+    }    
+}
+
 
 fn main() {
     // 1. The code below doesn't work because Cake doesn't implement Debug.
@@ -23,11 +40,11 @@ fn main() {
     // function instead of moved.
     // - Hint: You may need to derive another trait in order to be able to derive the Copy trait
 
-    // match cake {
-    //     Cake::Chocolate => println!("The name's Chocolate. Dark...Chocolate."),
-    //     Cake::MapleBacon => println!("Dreams do come true!"),
-    //     Cake::Spice => println!("Great, let's spice it up!"),
-    // }
+    match cake {
+        Cake::Chocolate => println!("The name's Chocolate. Dark...Chocolate."),
+        Cake::MapleBacon => println!("Dreams do come true!"),
+        Cake::Spice => println!("Great, let's spice it up!"),
+    }
 
     // 3. Uncomment the println below. It doesn't work since the Party struct doesn't implement the
     // Debug or Default traits.
@@ -35,16 +52,16 @@ fn main() {
     // - Manually implement the Default trait for the Party struct. Use the value below as the
     // default value that you return from the `default` method:
     //
-    //     Party {
-    //         at_restaurant: true,
-    //         num_people: 8,
-    //         cake: Cake::Chocolate,
-    //     }
+    // Party {
+    //     at_restaurant: true,
+    //     num_people: 8,
+    //     cake: Cake::Chocolate,
+    // }
     //
     // Hint: If you get stuck, there is an example at
     // https://doc.rust-lang.org/std/default/trait.Default.html#how-can-i-implement-default
 
-    // println!("The default Party is\n{:#?}", Party::default());
+    println!("The default Party is\n{:#?}", Party::default());
 
     // 4. You prefer Maple Bacon cake. Use "struct update syntax" to create a Party with `cake`
     // set to `Cake::MapleBacon`, but the rest of the values are default.
