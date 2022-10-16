@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Cake {
     Chocolate,
     MapleBacon,
@@ -26,6 +26,17 @@ impl Default for Party {
     }    
 }
 
+impl PartialEq for Party{
+    fn eq(&self, other: &Self) -> bool {
+        self.cake == other.cake 
+    }    
+}  
+
+impl From<&Party> for Cake{
+    fn from(party: &Party) -> Self {
+        party.cake
+    }    
+} 
 
 fn main() {
     // 1. The code below doesn't work because Cake doesn't implement Debug.
@@ -69,10 +80,11 @@ fn main() {
     // Hint: The trick to struct update syntax is specifying the value(s) you want to customize
     // first and then ending the struct with `..Default::default()` -- but no comma after that!
 
-    // let party = Party {
-    //     ...
-    // };
-    // println!("Yes! My party has my favorite {:?} cake!", party.cake);
+    let party = Party {
+        cake: Cake::MapleBacon,
+        ..Default::default()
+    };
+    println!("Yes! My party has my favorite {:?} cake!", party.cake);
 
     // 5. Parties are "equal" if they have the same cake.
     // - Derive the PartialEq trait for the Cake enum so Cakes can be compared.
@@ -80,14 +92,26 @@ fn main() {
     // then they are equal, no matter the location or number of attendees at the party.
     // - Uncomment and run the code below.
 
-    // let other_party = Party {
-    //     at_restaurant: false,
-    //     num_people: 235,
-    //     cake: Cake::MapleBacon,
-    // };
-    // if party == other_party {
-    //     println!("Your party is just like mine!");
-    // }
+
+    let other_party = Party {
+        at_restaurant: false,
+        num_people: 235,
+        cake: Cake::MapleBacon,
+    };
+    if party == other_party {
+        println!("Your party is just like mine!");
+    }
+    let neighbour_party = Party {
+        at_restaurant: false,
+        num_people: 235,
+        cake: Cake::Chocolate,
+    };
+    if party == neighbour_party {
+        println!("Neighbour's is just like mine!");
+    }
+    else{
+        println!("Neighbour's is not like mine!");
+    }
 
     // Challenge: You would like to be able to pass a Party struct into the smell_cake() function
     // which takes a type T which implements the Into<Cake> trait.
@@ -95,20 +119,20 @@ fn main() {
     // - Implement `From<Party> for Cake` so that the function call below works.
     //
 
-    // smell_cake(party);
+    smell_cake(&party);
 
     // Challenge 2: Implement `From<&Party> for Cake` so that you can smell your cake without
     // consuming it. Change the code above to pass in a &party. Then uncomment and run the code
     // below. After all, you want to smell your cake and eat it, too!
 
-    // println!("Yum! I'm eating this cake: {:?}. Oops, I dropped it on the floor.", party.cake);
-    // drop(cake);
+    println!("Yum! I'm eating this cake: {:?}. Oops, I dropped it on the floor.", party.cake);
+    drop(cake);
 }
 
 pub fn admire_cake(cake: Cake) {
     println!("What a nice {:?} cake! 🎂", cake);
 }
 
-// pub fn smell_cake<T: Into<Cake>>(something: T) {
-//     println!("Hmm...something smells like a {:?} cake!", something.into());
-// }
+pub fn smell_cake<T: Into<Cake>>(something: T) {
+    println!("Hmm...something smells like a {:?} cake!", something.into());
+}
