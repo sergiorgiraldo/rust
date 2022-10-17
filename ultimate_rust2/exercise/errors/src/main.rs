@@ -1,6 +1,8 @@
 // START IN lib.rs!
 
-use aquarium::Dolphin;
+use aquarium::{Dolphin, DolphinError};
+use anyhow::Result;
+
 // Silence some warnings so they don't distract from the exercise.
 #[allow(clippy::vec_init_then_push)]
 
@@ -11,23 +13,32 @@ use aquarium::Dolphin;
 // - Have the play_time function return a `Result<Vec<String>>`. The vector of Strings will
 //   represent successful outcomes of various dolphin tricks.
 
-// fn play_time(dolphin: &Dolphin) -> ... {
-//     let mut responses = vec![];
-//     // 2b. Call the .say_your_name() method on `dolphin`, use `?` to unwrap the value, and push
-//     // the value onto the `responses` vector.
-//     //
-//     // let response = ...    // this can be done with an intermediate variable...
-//     // responses.push( ... ) // ...or all on one line. Either way is fine!
-//     //
-//     // 2c. Do the same thing as #2b for the .flip() method
-//     //
-//     // 2d. Do the same thing as #2b for the .shake_hands() method
-//
-//     Ok(responses)
-// }
+fn play_time(dolphin: &Dolphin) -> Result<Vec<String>, DolphinError> {
+    let mut responses = vec![];
+    // 2b. Call the .say_your_name() method on `dolphin`, use `?` to unwrap the value, and push
+    // the value onto the `responses` vector.
+    //
+    // 2c. Do the same thing as #2b for the .flip() method
+    //
+    // 2d. Do the same thing as #2b for the .shake_hands() method
+    let response = dolphin.say_your_name()?;
+    responses.push(response);
 
-fn main() {
+    let response = dolphin.flip()?;
+    responses.push(response);
+
+    responses.push(dolphin.shake_hands()?); //can be in one line
+
+    Ok(responses)
+}
+
+fn main() -> Result<()> {
     let dolphins = vec![
+        Dolphin {
+            name: "Jamja".into(),
+            age: 6,
+            hungry: false,
+        },
         Dolphin {
             name: "Augustinius".into(),
             age: 7,
@@ -54,17 +65,21 @@ fn main() {
         // that play_time returns, use the try (?) operator to only handle the success condition.
         // 
         // If done correctly, the output of the program will become much shorter. Since play_time
-        // returns an Err variant the first time it is called, the try operator will return it from
+        // returns an Err variant when it is called for some dolphins, the try operator will return it from
         // main(), which will end the program at the first error. anyhow's Result will take care of
         // formatting the error output for us.
-        match play_time(dolphin) {
-            Ok(responses) => {
-                println!("{} did a FABULOUS PERFORMANCE!", dolphin.name);
-                for response in responses {
-                    println!("  {}", response);
-                }
-            }
-            Err(e) => println!("{} can't perform today: {}", dolphin.name, e.to_string()),
-        }
+        play_time(dolphin)?
+            .into_iter()
+            .for_each(|r| println!("{}", r)); 
+        // match play_time(dolphin) {
+        //     Ok(responses) => {
+        //         println!("{} did a FABULOUS PERFORMANCE!", dolphin.name);
+        //         for response in responses {
+        //             println!("  {}", response);
+        //         }
+        //     }
+        //     Err(e) => println!("{} can't perform today: {}", dolphin.name, e.to_string()),
+        // }
     }
+    Ok(())
 }
