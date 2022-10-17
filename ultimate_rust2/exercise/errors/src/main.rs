@@ -29,6 +29,8 @@ fn play_time(dolphin: &Dolphin) -> Result<Vec<String>, DolphinError> {
 
     responses.push(dolphin.shake_hands()?); //can be in one line
 
+    println!("{} did a FABULOUS PERFORMANCE!", dolphin.name);
+
     Ok(responses)
 }
 
@@ -73,7 +75,6 @@ fn main() -> Result<()> {
             .for_each(|r| println!("{}", r)); 
         // match play_time(dolphin) {
         //     Ok(responses) => {
-        //         println!("{} did a FABULOUS PERFORMANCE!", dolphin.name);
         //         for response in responses {
         //             println!("  {}", response);
         //         }
