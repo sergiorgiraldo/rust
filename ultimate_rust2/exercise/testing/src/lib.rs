@@ -1,24 +1,35 @@
-
 pub fn sploosh(x: i32, y: i32, z: i32) -> i32 {
-    // I ran once with match and other with if to see the benchmarks
-    // match (x, y, z) {
-    //     (x, _, _) if x < 0 => 99,
-    //     (1, 2, 3) => 4,
-    //     (5, 6, 7) => 3,
-    //     (x, y, z) => x + y - z,
+    // I ran once with `match` and others with `if` to see the benchmarks
+
+    match (x, y, z) {
+        (x, _, _) if x < 0 => 99,
+        (1, 2, 3) => 4,
+        (5, 6, 7) => 3,
+        (x, y, z) => x + y - z,
+    }
+
+    // if x < 0 {
+    //     99
     // }
-    if x < 0 {
-        99
-    }
-    else if x == 1 && y == 2 && z == 3{
-        4
-    }
-    else if x == 5 && y == 6 && z == 7{
-        3
-    }
-    else{
-        x + y - z
-    }
+    // else if x == 1 && y == 2 && z == 3{
+    //     4
+    // }
+    // else if x == 5 && y == 6 && z == 7{
+    //     3
+    // }
+    // else{
+    //     x + y - z
+    // }
+
+    // if x < 0 {
+    //     99
+    // } else {
+    //     match (x, y, z) {
+    //         (1, 2, 3) => 4,
+    //         (5, 6, 7) => 3,
+    //         (x, y, z) => x + y - z,
+    //     }
+    // }
 }
 
 ///# examples
@@ -33,12 +44,11 @@ pub fn splish(a: i32, b: i32) -> i32 {
 }
 
 pub fn guess(a: i32) -> Result<bool, String> {
-    if a == 42{
+    if a == 42 {
         Ok(true)
-    }
-    else{    
+    } else {
         Err(String::from("Not answer for everything"))
-    } 
+    }
 }
 
 // 1. Use the `cfg` attribute to mark the `test` module below as a test module
@@ -79,22 +89,21 @@ mod test {
     }
 
     #[test]
-    fn test_guess(){
+    fn test_guess() {
         assert_eq!(guess(42), Ok(true));
     }
 
     #[should_panic]
     #[test]
-    fn test_guess_fail(){
+    fn test_guess_fail() {
         assert_eq!(guess(0), Ok(true));
     }
 
     #[test]
-    fn test_guess_fail_message(){
-        let actual_err = guess(0).unwrap_err(); 
+    fn test_guess_fail_message() {
+        let actual_err = guess(0).unwrap_err();
         assert_eq!(actual_err, "Not answer for everything");
     }
-
 }
 
 // 5. Create a `tests/` directory and an integration test file `tests/more_tests.rs`
