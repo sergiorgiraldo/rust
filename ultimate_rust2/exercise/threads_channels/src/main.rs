@@ -1,7 +1,6 @@
 // Silence some warnings so they don't distract from the exercise.
 #![allow(dead_code, unused_imports, unused_variables)]
-use crossbeam::channel;
-use std::sync::mpsc::channel;
+use crossbeam::channel::{self, Receiver};
 use std::thread;
 use std::time::Duration;
 
@@ -16,6 +15,12 @@ fn expensive_sum(v: Vec<i32>) -> i32 {
     v.iter().filter(|&x| x % 2 == 0).map(|x| x * x).sum()
 }
 
+fn handle_messages(name: &str, numbers: Receiver<i32>){
+    for nb in numbers {
+        println!("this is the child thread {}: received {}", name, nb);
+        thread::sleep(Duration::from_secs_f32(0.2));
+    }
+}
 fn main() {
     let my_vector = vec![2, 5, 1, 0, 4, 3];
 
@@ -95,7 +100,24 @@ fn main() {
     // Challenge: Make two child threads and give them each a receiving end to a channel. From the
     // main thread loop through several values and print each out and then send it to the channel.
     // On the child threads print out the values you receive. Close the sending side in the main
-    // thread by calling `drop(tx)` (assuming you named your sender channel variable `tx`). Join
+    // thread by calling `drop(tx_a)` (assuming you named your sender channel variable `tx_a`). Join
     // the child threads.
+    let (tx_a, rx_a) = channel::unbounded();
+    let rx_a2 = rx_a.clone();
+
+    let handle_x = thread::spawn(move|| { handle_messages("x", rx_a)});
+    let handle_y = thread::spawn(move|| { handle_messages("y", rx_a2)});
+
+    for i in 1..=10{
+        println!("this is the main thread:{}", i);
+        let _ = tx_a.send(i);
+        thread::sleep(Duration::from_secs_f32(0.5));
+
+    }
+    drop(tx_a);
+
+    let _ = handle_x.join();
+    let _ = handle_y.join();
+    
     println!("Main thread: Exiting.")
 }
