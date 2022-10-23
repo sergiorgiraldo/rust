@@ -17,4 +17,5 @@ fn main() {
     timeit("p003", || euler::p003::do_it());
     timeit("p004", || euler::p004::do_it());
     timeit("p005", || euler::p005::do_it());
+    timeit("p006", || euler::p006::do_it());
 }
