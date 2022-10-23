@@ -1,0 +1,8 @@
+#!/bin/sh
+
+x=`\cat /Users/GK47LX/source/rust/euler/src/euler/mod.rs | tail -n 1 | choose 2` 
+last=${x:1:3}
+next=$((last + 1))
+echo "$(printf "\npub mod p%03d;" $next)" >> /Users/GK47LX/source/rust/euler/src/euler/mod.rs
+filename=$(printf "%03d" $next)
+echo "pub fn do_it(){}" > "/Users/GK47LX/source/rust/euler/src/euler/p${filename}.rs"
