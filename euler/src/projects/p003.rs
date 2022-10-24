@@ -29,9 +29,9 @@ fn factors(x: u64) -> Vec<u64> {
     lst
 }
 
-pub fn do_it(){
-    let nb:u64 = 600851475143;
+pub fn do_it() {
+    let nb: u64 = 600851475143;
     let factors = factors(nb);
-    
-    println!("p003=>{}",factors[factors.len() - 1]);
+
+    println!("p003=>{}", factors[factors.len() - 1]);
 }

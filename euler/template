@@ -1,0 +1,5 @@
+pub fn do_it(){
+    let mut res=0;
+    //TODO
+    println!("p__=>{}", res); 
+}

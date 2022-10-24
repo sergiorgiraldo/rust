@@ -1,21 +1,10 @@
-use std::time::SystemTime;
-
-mod euler;
-
-fn timeit<F: Fn() -> T, T>(what: &str, f: F) -> T {
-    let start = SystemTime::now();
-    let result = f();
-    let end = SystemTime::now();
-    let duration = end.duration_since(start).unwrap();
-    println!("\t{} took {} msecs", what, duration.as_millis());
-    result
-  }
+mod projects;
 fn main() {
-    println!("Euler problems");
-    timeit("p001", || euler::p001::do_it());
-    timeit("p002", || euler::p002::do_it());
-    timeit("p003", || euler::p003::do_it());
-    timeit("p004", || euler::p004::do_it());
-    timeit("p005", || euler::p005::do_it());
-    timeit("p006", || euler::p006::do_it());
+    euler::timeit("p001", || projects::p001::do_it());
+    euler::timeit("p002", || projects::p002::do_it());
+    euler::timeit("p003", || projects::p003::do_it());
+    euler::timeit("p004", || projects::p004::do_it());
+    euler::timeit("p005", || projects::p005::do_it());
+    euler::timeit("p006", || projects::p006::do_it());
+    euler::timeit("p007", || projects::p007::do_it());
 }

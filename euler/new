@@ -1,8 +1,20 @@
 #!/bin/sh
 
-x=`\cat /Users/GK47LX/source/rust/euler/src/euler/mod.rs | tail -n 1 | choose 2` 
+x=`\cat /Users/GK47LX/source/rust/euler/src/projects/mod.rs | tail -n 1 | choose 2` 
 last=${x:1:3}
 next=$((last + 1))
-echo "$(printf "\npub mod p%03d;" $next)" >> /Users/GK47LX/source/rust/euler/src/euler/mod.rs
+
+echo "$(printf "\npub mod p%03d;" $next)" >> /Users/GK47LX/source/rust/euler/src/projects/mod.rs
+
 filename=$(printf "%03d" $next)
-echo "pub fn do_it(){}" > "/Users/GK47LX/source/rust/euler/src/euler/p${filename}.rs"
+\cat /Users/GK47LX/source/rust/euler/template > "/Users/GK47LX/source/rust/euler/src/projects/p${filename}.rs"
+
+i="1"
+echo "mod projects;" > /Users/GK47LX/source/rust/euler/src/main.rs
+echo "fn main() {" >> /Users/GK47LX/source/rust/euler/src/main.rs
+while [ $i -le $next ]
+do
+    echo "$(printf "euler::timeit(\"p%03d\", || projects::p%03d::do_it());" $i $i)" >> /Users/GK47LX/source/rust/euler/src/main.rs
+    i=$[$i+1]
+done
+echo "}" >> /Users/GK47LX/source/rust/euler/src/main.rs
