@@ -1,7 +1,7 @@
 #!/bin/sh
 
 x=`\cat /Users/GK47LX/source/rust/euler/src/projects/mod.rs | tail -n 1 | choose 2` 
-last=${x:1:3}
+last=10#${x:1:3}
 next=$((last + 1))
 
 echo "$(printf "\npub mod p%03d;" $next)" >> /Users/GK47LX/source/rust/euler/src/projects/mod.rs
@@ -14,7 +14,7 @@ echo "mod projects;" > /Users/GK47LX/source/rust/euler/src/main.rs
 echo "fn main() {" >> /Users/GK47LX/source/rust/euler/src/main.rs
 while [ $i -le $next ]
 do
-    echo "$(printf "euler::timeit(\"p%03d\", || projects::p%03d::do_it());" $i $i)" >> /Users/GK47LX/source/rust/euler/src/main.rs
+    echo "$(printf "euler::timeit(\"p%03d\", projects::p%03d::do_it);" $i $i)" >> /Users/GK47LX/source/rust/euler/src/main.rs
     i=$[$i+1]
 done
 echo "}" >> /Users/GK47LX/source/rust/euler/src/main.rs

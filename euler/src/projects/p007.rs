@@ -1,11 +1,11 @@
-use primes::{Sieve, PrimeSet};
+use primes::{PrimeSet, Sieve};
 
 pub fn do_it() {
     let mut pset = Sieve::new();
     let mut res = 0;
-    
+
     for (_, n) in pset.iter().enumerate().take(10001) {
-        res =n;
+        res = n;
     }
     println!("p007=>{}", res);
 }
