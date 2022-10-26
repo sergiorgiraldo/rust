@@ -13,4 +13,5 @@ fn main() {
     euler::timeit("p011", projects::p011::do_it);
     euler::timeit("p012", projects::p012::do_it);
     euler::timeit("p013", projects::p013::do_it);
+    euler::timeit("p014", projects::p014::do_it);
 }
