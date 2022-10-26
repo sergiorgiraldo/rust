@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 primes = "0.3.0"
 ndarray = "0.12"
+num = "0.4.0"

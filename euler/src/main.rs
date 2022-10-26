@@ -12,4 +12,5 @@ euler::timeit("p009", projects::p009::do_it);
 euler::timeit("p010", projects::p010::do_it);
 euler::timeit("p011", projects::p011::do_it);
 euler::timeit("p012", projects::p012::do_it);
+euler::timeit("p013", projects::p013::do_it);
 }

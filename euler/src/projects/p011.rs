@@ -1,6 +1,4 @@
 use ndarray::{Array, Ix2};
-use std::fs::File;
-use std::io::prelude::*;
 
 struct Sequence((u64, u64, u64, u64));
 
@@ -13,7 +11,7 @@ impl Sequence {
 fn compute() -> Result<u64, Box<dyn std::error::Error>> {
     let filename = "./src/data/011.txt";
 
-    let contents = get_contents(filename);
+    let contents = euler::get_contents(filename);
 
     let array = get_array(&contents.unwrap());
 
@@ -46,15 +44,7 @@ fn compute() -> Result<u64, Box<dyn std::error::Error>> {
     Ok(largeprod)
 }
 
-fn get_contents(filename: &str) -> Result<String, std::io::Error> {
-    let mut f = File::open(filename)?;
 
-    let mut contents = String::new();
-
-    f.read_to_string(&mut contents)?;
-
-    Ok(contents)
-}
 
 fn get_array(contents: &str) -> Array<u64, Ix2> {
     let rows = contents.split("\n").collect::<Vec<&str>>();
