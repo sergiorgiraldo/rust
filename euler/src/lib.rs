@@ -1,6 +1,6 @@
+use std::fs::File;
 use std::io::Read;
 use std::time::SystemTime;
-use std::fs::File;
 
 pub fn timeit<F: Fn() -> T, T>(what: &str, f: F) -> T {
     let start = SystemTime::now();

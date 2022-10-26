@@ -24,12 +24,8 @@ fn compute() -> Result<u64, Box<dyn std::error::Error>> {
 
     for i in 0..nrows {
         for j in 0..ncols {
-            check(
-                horizontal_sequence(i, j, nrows, &array), 
-                &mut largeprod);
-            check(
-                vertical_sequence(i, j, nrows, &array), 
-                &mut largeprod);
+            check(horizontal_sequence(i, j, nrows, &array), &mut largeprod);
+            check(vertical_sequence(i, j, nrows, &array), &mut largeprod);
             check(
                 rising_diagonal_sequence(i, j, nrows, &array),
                 &mut largeprod,
@@ -44,10 +40,8 @@ fn compute() -> Result<u64, Box<dyn std::error::Error>> {
     Ok(largeprod)
 }
 
-
-
 fn get_array(contents: &str) -> Array<u64, Ix2> {
-    let rows = contents.split("\n").collect::<Vec<&str>>();
+    let rows = contents.split('\n').collect::<Vec<&str>>();
 
     let rows = rows
         .iter()
