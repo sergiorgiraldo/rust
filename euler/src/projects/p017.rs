@@ -23,7 +23,7 @@ fn stringfy(i: usize) -> String {
         30 => "Thirty".to_owned(),
         40 => "Forty".to_owned(),
         50 => "Fifty".to_owned(),
-        60 => "sixty".to_owned(),
+        60 => "Sixty".to_owned(),
         70 => "Seventy".to_owned(),
         80 => "Eighty".to_owned(),
         90 => "Ninety".to_owned(),
@@ -62,4 +62,37 @@ pub fn do_it() {
         .fold(0, |acc, n| acc + n.len());
 
     println!("p017=>{}", res);
+}
+
+#[cfg(test)]
+mod test_17 {
+    use super::*;
+    use speculoos::prelude::*;
+
+    #[test]
+    fn test() {
+        let input1 = 7;
+        let res = stringfy(input1);
+        assert_that(&res).is_equal_to("Seven".to_owned());
+
+        let input1 = 12;
+        let res = stringfy(input1);
+        assert_that(&res).is_equal_to("Twelve".to_owned());
+
+        let input1 = 37;
+        let res = stringfy(input1);
+        assert_that(&res).is_equal_to("ThirtySeven".to_owned());
+
+        let input1 = 156;
+        let res = stringfy(input1);
+        assert_that(&res).is_equal_to("OneHundredAndFiftySix".to_owned());
+
+        let input1 = 468;
+        let res = stringfy(input1);
+        assert_that(&res).is_equal_to("FourHundredAndSixtyEight".to_owned());
+
+        let input1 = 1000;
+        let res = stringfy(input1);
+        assert_that(&res).is_equal_to("OneThousand".to_owned());   
+    }
 }
