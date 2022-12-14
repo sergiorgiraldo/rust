@@ -1,8 +1,7 @@
-use crate::{ws, Client, Clients, Result};
+use crate::{ws, model::{Order}, Client, Clients, Result};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use warp::{http::StatusCode, reply::json, ws::Message, Reply};
-
 #[derive(Deserialize, Debug)]
 pub struct RegisterRequest {
     user_id: usize,
@@ -54,7 +53,7 @@ async fn register_client(id: String, user_id: usize, clients: Clients) {
         id,
         Client {
             user_id,
-            topics: vec![String::from("cats")],
+            topics: vec![String::from("order")],
             sender: None,
         },
     );
@@ -74,5 +73,15 @@ pub async fn ws_handler(ws: warp::ws::Ws, id: String, clients: Clients) -> Resul
 }
 
 pub async fn health_handler() -> Result<impl Reply> {
-    Ok(StatusCode::OK)
+    Ok(json(&"I AM ALIVE"))
+}
+
+pub async fn order_handler(o: Order,
+    sender: crossbeam::channel::Sender<Order>)-> Result<impl Reply>{
+    let id =  Uuid::new_v4().as_simple().to_string();
+    let mut order = o.clone();
+    order.id = id.clone();
+    println!("{:?}", order);
+    let _ = sender.send(order);
+    Ok(json(&id))
 }
