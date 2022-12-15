@@ -2,7 +2,6 @@ use crossbeam::channel::Receiver;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::{thread, time::Duration};
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Order {
     pub id: String,
@@ -49,29 +48,26 @@ impl Cook {
                         break;
                     }
                 }    
-                println!("I am {:?} doing {:?} from {}", self.name, order.id, order.client);
-                let _ = Self::publish("blah".to_string());
+                
+                Self::post_msg(format!("I am {:?} doing {:?} from {}", self.name, order.id, order.client));
+
                 for  (k, v) in ingredients.iter() {
-                    println!("{}::{} -> cooking {}", self.name, order.id, k);
+                    Self::post_msg(format!("{}::{} -> cooking {}", self.name, order.id, k));
                     thread::sleep(Duration::from_secs(*v));
                 }    
-                println!("{} DONE", order.id);
+                Self::post_msg(format!("{} DONE", order.id));
             }
         });
     }
 
-    pub async fn publish(msg: String)-> Result<(), Box<dyn std::error::Error>>{
-        let mut map = HashMap::new();
-        map.insert("user_id", "1");
-        map.insert("topic", "order");
-        map.insert("message", &msg);
-        let client = reqwest::Client::new();
-        let _ = client.post("http://localhost:8000/publish")
-            .header("Content-Type", "application/json")
-            .json(&map)
-            .send()
-            .await?;
-        Ok(())
+    fn post_msg(msg: String){
+        println!("{}", msg);
+        let _ = ureq::post("http://localhost:8000/publish")
+        .send_json(ureq::json!({
+            "user_id": 1,
+            "topic": "order",
+            "message": msg
+        }));    
     }
 }
 
