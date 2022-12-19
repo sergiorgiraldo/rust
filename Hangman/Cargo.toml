@@ -1,0 +1,9 @@
+[package]
+name = "hangman"
+version = "1.0.0"
+authors = ["Sergio Rodrigues Giraldo <sergio@giraldo.com.br>"]
+
+[dependencies]
+rand="0.5.0"
+ansi_term = "0.7"
+seq = "0.5"
