@@ -57,8 +57,7 @@ fn main() {
                 UserInputStatus::LetterGuessed => {
                     gd.discovered_letters.push(guess_lower);
                     gd.guessed_letters.push(guess_lower);
-                    let status = format!("You discovered {}", guess_lower);
-                    gd.status = Green.paint(status).to_string();
+                    gd.status = Green.paint(format!("You discovered {}", guess_lower)).to_string();
                     gd.history_letters = format!(
                         "All letters: {}\nGuessed letters: {}\nMissed letters: {}",
                         gd.discovered_letters,
@@ -91,15 +90,13 @@ fn main() {
                         update_screen(&gd, &secret_line_masked);
                         break;
                     } else {
-                        let status = format!("Unfortunately, no {}", guess_lower);
+                        gd.status = Red.paint(format!("Unfortunately, no {}", guess_lower)).to_string();
                         gd.history_letters = format!(
                             "All letters: {}\nGuessed letters: {}\nMissed letters: {}",
                             gd.discovered_letters,
                             Green.paint(&gd.guessed_letters),
                             Red.paint(&gd.missed_letters)
                         );
-                        gd.status = Red.paint(status).to_string();
-                        update_screen(&gd, &secret_line_masked);
                     }
                 }
 
@@ -174,11 +171,11 @@ fn check_user_guess(gd: &GameData, user_guess: char) -> UserInputStatus {
         return UserInputStatus::AlreadyDiscovered;
     }
 
-    if !gd.secret_line.contains(user_guess) {
-        return UserInputStatus::LetterMissed;
+    if gd.secret_line.contains(user_guess) {
+        return UserInputStatus::LetterGuessed;
     }
 
-    UserInputStatus::LetterGuessed
+    UserInputStatus::LetterMissed
 }
 
 fn update_screen(gd: &GameData, secret_line: &String) {
