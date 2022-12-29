@@ -1,0 +1,15 @@
+[package]
+name = "graphql-101"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = { version = "0.4.15", features=["serde"] }
+csv = "1.1"
+juniper = "0.15.10"
+juniper_rocket = "0.8.2"
+rocket = "0.5.0-rc.2"
+serde = { version = "1.0", features = ["derive"] }
+rand = "0.8.5"
