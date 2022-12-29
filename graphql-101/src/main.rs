@@ -34,7 +34,6 @@ fn post_graphql_handler(
 ) -> juniper_rocket::GraphQLResponse {
     let start = Instant::now();
     let response = request.execute_sync(&schema, &context);
-    println!("Request took {:?}", start.elapsed());
     response
 }
 

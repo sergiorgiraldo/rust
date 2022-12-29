@@ -69,6 +69,37 @@ impl Query {
         "Hello, world!"
     }
 
+    /// Invoice resource to query invoices for a given store
+    fn invoices_per_store(store: String, first: Option<i32>, offset: Option<i32>, ctx: &DataContext)  -> Vec<Invoice>{
+        let mut invoice_map = HashMap::new();
+
+        let mut invoice_list = ctx.invoices.lock().unwrap().clone(); //this clone is important. if you dont clone the retain will kill the values in the array
+        invoice_list.retain(|e| e.store_id == store);
+
+        let (first, offset) = match (first, offset) {
+            (Some(f), Some(o)) => (f as usize, o as usize),
+            (Some(f), None) => (f as usize, 0),
+            (None, Some(o)) => (invoice_list.len() - o as usize, o as usize),
+            (None, None) => (invoice_list.len(), 0),
+        };
+
+        for inv_model in invoice_list.iter().skip(offset).take(first) {
+            let invoice = Invoice {
+                invoice_id: inv_model.invoice_id,
+                invoice_number: inv_model.invoice_number.to_owned(),
+                client_id: inv_model.client_id.to_owned(),
+                invoice_date: inv_model.invoice_date,
+                due_date: inv_model.due_date,
+                invoice_items: Vec::new(),
+                store_id: inv_model.store_id.to_owned(),
+            };
+
+            invoice_map.insert(invoice.invoice_id, invoice);
+        }
+
+        invoice_map.values().cloned().collect()
+    }
+
     /// Client resource to query clients and related invoices
     fn clients(first: Option<i32>, offset: Option<i32>, ctx: &DataContext) -> Vec<Client> {
         let mut client_map = HashMap::new();
