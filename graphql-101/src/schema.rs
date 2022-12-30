@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use chrono::{Datelike, Local, NaiveDate, Days};
+use chrono::{Datelike, Local, NaiveDate, Days, Months};
 use juniper::{self, RootNode, EmptySubscription};
 use crate::db::DataContext;
 use rand::seq::SliceRandom;
@@ -253,6 +253,22 @@ pub struct Mutation;
 #[juniper::graphql_object(Context = DataContext)]
 impl Mutation {
     /// Adds a new client to the client list
+    /// Example how to write on GraphiQL
+    /*   mutation {
+            addClient(newClient:
+                {
+                clientId: "12-232323",
+                companyName: "FooBar",
+                contactName: "JOhn Doe",
+                contactTitle: "Worlds Manager",
+                phone:"06 21939574",
+                email:"sergiorgiraldo@gmail.com"
+                }
+            ){
+                clientId
+            }
+        }
+    */
     fn add_client(new_client: NewClient, ctx: &DataContext) -> Client {
         //  Create GraphQL Client type to return
         let client = Client {
@@ -282,6 +298,16 @@ impl Mutation {
     }
 
     /// Adds new invoice for an existing client
+    /* 
+    mutation {
+        addInvoice(clientId: "23-5360092"){
+            invoiceId,
+            invoiceNumber,
+            invoiceDate,
+            dueDate
+        }
+    }    
+*/
     fn add_invoice(client_id: String, ctx: &DataContext) -> Option<Invoice> {
         let client_list = ctx.clients.lock().unwrap();
 
@@ -300,14 +326,16 @@ impl Mutation {
 
             let invoice_number = format!("INV{}", invoice_id);
 
+            let current_day = Local::now().day();
             let current_month = Local::now().month();
             let current_year = Local::now().year();
+            println!("current_month: {}", current_month);
+            println!("current_year: {}", current_year);
 
-            let invoice_date =
-                NaiveDate::from_ymd_opt(current_year, current_month + 1, 1).unwrap().checked_sub_days(Days::new(1)).unwrap();
 
-            let due_date =
-                NaiveDate::from_ymd_opt(current_year, current_month + 2, 1).unwrap().checked_sub_days(Days::new(1)).unwrap();
+            let invoice_date = NaiveDate::from_ymd_opt(current_year, current_month, current_day).unwrap().checked_add_months(Months::new(1)).unwrap().checked_sub_days(Days::new(1)).unwrap();
+
+            let due_date =NaiveDate::from_ymd_opt(current_year, current_month, current_day).unwrap().checked_add_months(Months::new(2)).unwrap().checked_sub_days(Days::new(1)).unwrap();
 
             let stores = ctx.stores.lock().unwrap();
             let store = stores.choose(&mut rand::thread_rng());

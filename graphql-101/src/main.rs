@@ -1,15 +1,14 @@
 #[macro_use] extern crate rocket;
 
-use std::time::Instant;
 use juniper_rocket;
 use rocket::{response::content, State};
 use juniper::EmptySubscription;
+use db::DataContext;
+use schema::*;
+
 mod db;
 mod models;
 mod schema;
-
-use db::DataContext;
-use schema::*;
 
 #[get("/")]
 fn graphiql() -> content::RawHtml<String> {
@@ -32,9 +31,7 @@ fn post_graphql_handler(
     request: juniper_rocket::GraphQLRequest,
     schema: &State<Schema>,
 ) -> juniper_rocket::GraphQLResponse {
-    let start = Instant::now();
-    let response = request.execute_sync(&schema, &context);
-    response
+    request.execute_sync(&schema, &context)
 }
 
 #[launch]
