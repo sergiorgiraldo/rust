@@ -35,14 +35,12 @@ fn linear_search() {
 
     // Find out the index of that element by traversing the array
     // Linear Search Algorithm
-    let mut index = 0;
     let mut found = false;
-    for (_, &item) in arr.iter().enumerate() {
+    for (count, &item) in arr.iter().enumerate() {
         if item == key {
-            println!("{} is present at index: {}", key, index);
+            println!("{} is present at index: {}", key, count);
             found = true;
         }
-        index += 1;
     }
     if !found {
         println!("{} is not present.", key);
