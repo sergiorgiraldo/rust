@@ -95,7 +95,7 @@ fn binary_search_algo(arr: Vec<u32>, key: u32) -> i32 {
     let mut start = 0;
     let mut end = range - 1;
     while start <= end {
-        let mid = ((end - start) / 2) + start;
+        let mid = (start + end) / 2;
         if arr[mid] == key {
             return mid as i32;
         } 
@@ -110,5 +110,5 @@ fn binary_search_algo(arr: Vec<u32>, key: u32) -> i32 {
             end = mid - 1;
         }
     }
-    return -1;
+    return -1
 }
