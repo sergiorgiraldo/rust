@@ -4,6 +4,7 @@ fn main() {
     selection_sort();
     bubble_sort();
     insertion_sort();
+    pair_sum();
 }
 
 fn build_array() -> Vec<u32> {
@@ -186,3 +187,33 @@ fn insertion_sort() {
 
     println!("Sorted Array: {:?}", arr);
 }
+
+/*
+   Pair Sum Problem (Two Pointer Approach)
+   Given a sorted array, Find pair of elements that sum to k(Given)
+*/
+fn pair_sum() {
+    println!("###### pair sum, sum of 16");
+
+    let arr = [1, 3, 4, 5, 7, 10, 11, 12, 13];
+    println!("Original Array: {:?}", arr);
+
+    let k = 16;
+
+    let mut i = 0;
+    let mut j = arr.len() - 1;
+
+    while i < j {
+        let current_sum = arr[i] + arr[j];
+        if current_sum == k {
+            println!("{} and {}", arr[i], arr[j]);
+            i += 1;
+            j -= 1;
+        } else if current_sum > k {
+            j -= 1;
+        } else {
+            i += 1;
+        }
+    }
+}
+
