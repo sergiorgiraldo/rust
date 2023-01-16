@@ -5,6 +5,8 @@ fn main() {
     bubble_sort();
     insertion_sort();
     pair_sum();
+    wave_print();
+    spiral_print();
 }
 
 fn build_array() -> Vec<u32> {
@@ -217,3 +219,210 @@ fn pair_sum() {
     }
 }
 
+/*
+Case1:
+    Enter Array Rows & Cols: 3 3
+    1 2 3
+    4 5 6
+    7 8 9
+    Wave Print: 1 4 7  8 5 2  3 6 9
+Case2:
+    Enter Array Rows & Cols: 3 6
+     1  2  3  4  5  6
+     7  8  9 10 11 12
+    13 14 15 16 17 18
+    Wave Print: 1 7 13  14 8 2  3 9 15  16 10 4  5 11 17  18 12 6
+*/
+fn wave_print() {
+    println!("###### wave print");
+    let mut array = vec![vec![0; 3]; 3];
+    array[0][0] = 1;
+    array[0][1] = 2;
+    array[0][2] = 3;
+
+    array[1][0] = 4;
+    array[1][1] = 5;
+    array[1][2] = 6;
+
+    array[2][0] = 7;
+    array[2][1] = 8;
+    array[2][2] = 9;
+    wave_print_algorithm(array);
+
+    let mut array = vec![vec![0; 6]; 3];
+    array[0][0] = 1;
+    array[0][1] = 2;
+    array[0][2] = 3;
+    array[0][3] = 4;
+    array[0][4] = 5;
+    array[0][5] = 6;
+
+    array[1][0] = 7;
+    array[1][1] = 8;
+    array[1][2] = 9;
+    array[1][3] = 10;
+    array[1][4] = 11;
+    array[1][5] = 12;
+
+    array[2][0] = 13;
+    array[2][1] = 14;
+    array[2][2] = 15;
+    array[2][3] = 16;
+    array[2][4] = 17;
+    array[2][5] = 18;
+    wave_print_algorithm(array);
+}
+
+fn wave_print_algorithm(arr: Vec<Vec<i32>>) {
+    let rows = arr.len();
+    let cols = arr[0].len();
+
+    println!("ORIGINAL");
+    for row in 0..rows {
+        for col in 0..cols {
+            print!("{}\t", arr[row][col]);
+        }
+        println!("");
+    }
+
+    println!("WAVE");
+    for col in 0..cols {
+        if col % 2 == 0 {
+            // Even Cols (Top Down Direction)
+            for row in 0..rows {
+                print!("{} ", arr[row][col]);
+            }
+        } else {
+            // Odd Cols (Bottom Up Direction)
+            for row in (0..rows).rev() {
+                print!("{} ", arr[row][col]);
+            }
+        }
+    }
+    println!("");
+}
+
+/*
+OUTPUT:
+Case1:
+    Enter Rows & Cols: 4 4
+     1  2  3  4
+     5  6  7  8
+     9 10 11 12
+    13 14 15 16
+    Spiral Pattern: 1 2 3 4   8 12 16   15 14 13   9 5   6 7   11   10
+Case2:
+    Enter Rows & Cols: 3 6
+     1  2  3  4  5  6
+     7  8  9 10 11 12
+    13 14 15 16 17 18
+    Spiral Pattern: 1 2 3 4 5 6   12 18   17 16 15 14 13   7   8 9 10 11
+*/
+fn spiral_print() {
+    println!("###### spiral print");
+    let mut array = vec![vec![0; 4]; 4];
+    array[0][0] = 1;
+    array[0][1] = 2;
+    array[0][2] = 3;
+    array[0][3] = 4;
+
+    array[1][0] = 5;
+    array[1][1] = 6;
+    array[1][2] = 7;
+    array[1][3] = 8;
+
+    array[2][0] = 9;
+    array[2][1] = 10;
+    array[2][2] = 11;
+    array[2][3] = 12;
+
+    array[3][0] = 13;
+    array[3][1] = 14;
+    array[3][2] = 15;
+    array[3][3] = 16;
+    spiral_print_algorithm(array);
+
+    let mut array = vec![vec![0; 6]; 3];
+    array[0][0] = 1;
+    array[0][1] = 2;
+    array[0][2] = 3;
+    array[0][3] = 4;
+    array[0][4] = 5;
+    array[0][5] = 6;
+
+    array[1][0] = 7;
+    array[1][1] = 8;
+    array[1][2] = 9;
+    array[1][3] = 10;
+    array[1][4] = 11;
+    array[1][5] = 12;
+
+    array[2][0] = 13;
+    array[2][1] = 14;
+    array[2][2] = 15;
+    array[2][3] = 16;
+    array[2][4] = 17;
+    array[2][5] = 18;
+    spiral_print_algorithm(array);
+}
+
+fn spiral_print_algorithm(arr: Vec<Vec<i32>>) {
+    let rows = arr.len();
+    let cols = arr[0].len();
+
+    println!("ORIGINAL");
+    for row in 0..rows {
+        for col in 0..cols {
+            print!("{}\t", arr[row][col]);
+        }
+        println!("");
+    }
+
+    println!("SPIRAL");
+    let mut start_row = 0;
+    let mut start_col = 0;
+    let mut end_row = rows - 1;
+    let mut end_col = cols - 1;
+
+    while start_row <= end_row && start_col <= end_col {
+        // 1. First Row
+        for i in start_col..=end_col {
+            print!("{} ", arr[start_row][i]);
+        }
+        start_row += 1;
+        if start_row <= end_row {
+            print!("• ");
+        }
+        // 2. Last Col
+        for i in start_row..=end_row {
+            print!("{} ", arr[i][end_col]);
+        }
+        end_col -= 1;
+        if start_row <= end_row{
+            print!("• ");
+        }
+
+        // 3. Last Row
+        if start_row <= end_row {
+            for i in (start_col..=end_col).rev() {
+                print!("{} ", arr[end_row][i]);
+            }
+            end_row -= 1;
+            if start_row <= end_row {
+                print!("• ");
+            }
+        }
+
+        // 4. First Col
+        if start_col <= end_col {
+            for i in (start_row..=end_row).rev() {
+                print!("{} ", arr[i][start_col]);
+            }
+            start_col += 1;
+            if start_row <= end_row{
+                print!("• ");
+            }
+        }
+    }
+    println!("");
+}
