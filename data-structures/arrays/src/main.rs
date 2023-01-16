@@ -7,6 +7,7 @@ fn main() {
     pair_sum();
     wave_print();
     spiral_print();
+    rotate_array();
 }
 
 fn build_array() -> Vec<u32> {
@@ -219,6 +220,18 @@ fn pair_sum() {
     }
 }
 
+fn print_array(arr: &Vec<Vec<i32>>, txt: &str) {
+    let rows = arr.len();
+    let cols = arr[0].len();
+    println!("{}", txt);
+    for row in 0..rows {
+        for col in 0..cols {
+            print!("{}\t", arr[row][col]);
+        }
+        println!("");
+    }
+}
+
 /*
 Case1:
     Enter Array Rows & Cols: 3 3
@@ -277,13 +290,7 @@ fn wave_print_algorithm(arr: Vec<Vec<i32>>) {
     let rows = arr.len();
     let cols = arr[0].len();
 
-    println!("ORIGINAL");
-    for row in 0..rows {
-        for col in 0..cols {
-            print!("{}\t", arr[row][col]);
-        }
-        println!("");
-    }
+    print_array(&arr, "ORIGINAL");
 
     println!("WAVE");
     for col in 0..cols {
@@ -370,13 +377,7 @@ fn spiral_print_algorithm(arr: Vec<Vec<i32>>) {
     let rows = arr.len();
     let cols = arr[0].len();
 
-    println!("ORIGINAL");
-    for row in 0..rows {
-        for col in 0..cols {
-            print!("{}\t", arr[row][col]);
-        }
-        println!("");
-    }
+    print_array(&arr, "ORIGINAL");
 
     println!("SPIRAL");
     let mut start_row = 0;
@@ -398,7 +399,7 @@ fn spiral_print_algorithm(arr: Vec<Vec<i32>>) {
             print!("{} ", arr[i][end_col]);
         }
         end_col -= 1;
-        if start_row <= end_row{
+        if start_row <= end_row {
             print!("• ");
         }
 
@@ -419,10 +420,62 @@ fn spiral_print_algorithm(arr: Vec<Vec<i32>>) {
                 print!("{} ", arr[i][start_col]);
             }
             start_col += 1;
-            if start_row <= end_row{
+            if start_row <= end_row {
                 print!("• ");
             }
         }
     }
     println!("");
+}
+
+fn rotate_array() {
+    println!("###### rotate array");
+    let mut arr = vec![vec![0; 4]; 4];
+
+    arr[0][0] = 1;
+    arr[0][1] = 2;
+    arr[0][2] = 3;
+    arr[0][3] = 4;
+
+    arr[1][0] = 5;
+    arr[1][1] = 6;
+    arr[1][2] = 7;
+    arr[1][3] = 8;
+
+    arr[2][0] = 9;
+    arr[2][1] = 10;
+    arr[2][2] = 11;
+    arr[2][3] = 12;
+
+    arr[3][0] = 13;
+    arr[3][1] = 14;
+    arr[3][2] = 15;
+    arr[3][3] = 16;
+
+    let rows = arr.len();
+    let cols = arr[0].len();
+
+    print_array(&arr, "ORIGINAL");
+
+    // reverse each row
+    for row in 0..rows {
+        let (mut start_col, mut end_col) = (0, cols - 1);
+        while start_col < end_col {
+            arr[row].swap(start_col, end_col);
+            start_col += 1;
+            end_col -= 1;
+        }
+    }
+    // transpose
+    let mut transposed = (0..arr[0].len()).map(|_| vec![]).collect::<Vec<_>>();
+
+    for original_row in arr.clone() {
+        for (item, transposed_row) in original_row.into_iter().zip(&mut transposed) {
+            transposed_row.push(item);
+        }
+    }
+
+    println!();
+
+    print_array(&arr, "ROTATED");
 }
