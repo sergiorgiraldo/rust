@@ -34,6 +34,31 @@ fn build_array() -> Vec<u32> {
     arr
 }
 
+fn build_array_2d(rows: usize, cols: usize) -> Vec<Vec<i32>> {
+    let mut array = vec![vec![0; cols]; rows];
+    let mut n = 0;
+
+    for row in 0..rows {
+        for col in 0..cols {
+            n += 1;
+            array[row][col] = n;
+        }
+    }
+    array
+}
+
+fn print_array(arr: &Vec<Vec<i32>>, txt: &str) {
+    let rows = arr.len();
+    let cols = arr[0].len();
+    println!("{}", txt);
+    for row in 0..rows {
+        for col in 0..cols {
+            print!("{}\t", arr[row][col]);
+        }
+        println!("");
+    }
+}
+
 fn linear_search() {
     println!("###### linear search of array");
     let mut key = String::new();
@@ -220,18 +245,6 @@ fn pair_sum() {
     }
 }
 
-fn print_array(arr: &Vec<Vec<i32>>, txt: &str) {
-    let rows = arr.len();
-    let cols = arr[0].len();
-    println!("{}", txt);
-    for row in 0..rows {
-        for col in 0..cols {
-            print!("{}\t", arr[row][col]);
-        }
-        println!("");
-    }
-}
-
 /*
 Case1:
     Enter Array Rows & Cols: 3 3
@@ -248,41 +261,11 @@ Case2:
 */
 fn wave_print() {
     println!("###### wave print");
-    let mut array = vec![vec![0; 3]; 3];
-    array[0][0] = 1;
-    array[0][1] = 2;
-    array[0][2] = 3;
 
-    array[1][0] = 4;
-    array[1][1] = 5;
-    array[1][2] = 6;
-
-    array[2][0] = 7;
-    array[2][1] = 8;
-    array[2][2] = 9;
+    let array = build_array_2d(3, 3);
     wave_print_algorithm(array);
 
-    let mut array = vec![vec![0; 6]; 3];
-    array[0][0] = 1;
-    array[0][1] = 2;
-    array[0][2] = 3;
-    array[0][3] = 4;
-    array[0][4] = 5;
-    array[0][5] = 6;
-
-    array[1][0] = 7;
-    array[1][1] = 8;
-    array[1][2] = 9;
-    array[1][3] = 10;
-    array[1][4] = 11;
-    array[1][5] = 12;
-
-    array[2][0] = 13;
-    array[2][1] = 14;
-    array[2][2] = 15;
-    array[2][3] = 16;
-    array[2][4] = 17;
-    array[2][5] = 18;
+    let array = build_array_2d(3, 6);
     wave_print_algorithm(array);
 }
 
@@ -327,49 +310,11 @@ Case2:
 */
 fn spiral_print() {
     println!("###### spiral print");
-    let mut array = vec![vec![0; 4]; 4];
-    array[0][0] = 1;
-    array[0][1] = 2;
-    array[0][2] = 3;
-    array[0][3] = 4;
 
-    array[1][0] = 5;
-    array[1][1] = 6;
-    array[1][2] = 7;
-    array[1][3] = 8;
-
-    array[2][0] = 9;
-    array[2][1] = 10;
-    array[2][2] = 11;
-    array[2][3] = 12;
-
-    array[3][0] = 13;
-    array[3][1] = 14;
-    array[3][2] = 15;
-    array[3][3] = 16;
+    let array = build_array_2d(4, 4);
     spiral_print_algorithm(array);
 
-    let mut array = vec![vec![0; 6]; 3];
-    array[0][0] = 1;
-    array[0][1] = 2;
-    array[0][2] = 3;
-    array[0][3] = 4;
-    array[0][4] = 5;
-    array[0][5] = 6;
-
-    array[1][0] = 7;
-    array[1][1] = 8;
-    array[1][2] = 9;
-    array[1][3] = 10;
-    array[1][4] = 11;
-    array[1][5] = 12;
-
-    array[2][0] = 13;
-    array[2][1] = 14;
-    array[2][2] = 15;
-    array[2][3] = 16;
-    array[2][4] = 17;
-    array[2][5] = 18;
+    let array = build_array_2d(3, 6);
     spiral_print_algorithm(array);
 }
 
@@ -430,32 +375,12 @@ fn spiral_print_algorithm(arr: Vec<Vec<i32>>) {
 
 fn rotate_array() {
     println!("###### rotate array");
-    let mut arr = vec![vec![0; 4]; 4];
 
-    arr[0][0] = 1;
-    arr[0][1] = 2;
-    arr[0][2] = 3;
-    arr[0][3] = 4;
-
-    arr[1][0] = 5;
-    arr[1][1] = 6;
-    arr[1][2] = 7;
-    arr[1][3] = 8;
-
-    arr[2][0] = 9;
-    arr[2][1] = 10;
-    arr[2][2] = 11;
-    arr[2][3] = 12;
-
-    arr[3][0] = 13;
-    arr[3][1] = 14;
-    arr[3][2] = 15;
-    arr[3][3] = 16;
+    let mut arr = build_array_2d(4, 4);
+    print_array(&arr, "ORIGINAL");
 
     let rows = arr.len();
     let cols = arr[0].len();
-
-    print_array(&arr, "ORIGINAL");
 
     // reverse each row
     for row in 0..rows {
@@ -477,5 +402,5 @@ fn rotate_array() {
 
     println!();
 
-    print_array(&arr, "ROTATED");
+    print_array(&transposed, "ROTATED");
 }
