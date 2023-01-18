@@ -8,6 +8,7 @@ fn main() {
     wave_print();
     spiral_print();
     rotate_array();
+    staircase_search();
 }
 
 fn build_array() -> Vec<u32> {
@@ -403,4 +404,45 @@ fn rotate_array() {
     println!();
 
     print_array(&transposed, "ROTATED");
+}
+
+/*
+Search element in a row-wise & column-wise sorted array
+*/
+fn staircase_search() {
+    println!("###### rotate array");
+
+    let arr = build_array_2d(6, 6);
+    print_array(&arr, "ORIGINAL");
+
+    let rows = arr.len();
+    let cols = arr[0].len();
+
+    let mut key = String::new();
+
+    println!("Enter the key you want to search: ");
+    std::io::stdin()
+        .read_line(&mut key)
+        .expect("Failed to read input.");
+    let key: i32 = key.trim().parse().unwrap();
+
+    let mut row_start: i32 = 0;
+    let mut col_end: i32 = (cols - 1) as i32;
+    let mut success = false;
+
+    while row_start <= (rows - 1) as i32 && col_end >= 0 {
+        if key == arr[row_start as usize][col_end as usize] {
+            success = true;
+            break;
+        } else if key > arr[row_start as usize][col_end as usize] {
+            row_start += 1;
+        } else {
+            col_end -= 1;
+        }
+    }
+    if success {
+        println!("Values found at Index: {} , {}", row_start, col_end);
+    } else {
+        println!("Values Not Found");
+    }
 }
