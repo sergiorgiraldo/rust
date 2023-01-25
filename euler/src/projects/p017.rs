@@ -29,10 +29,14 @@ fn stringfy(i: usize) -> String {
         90 => "Ninety".to_owned(),
         1000 => "OneThousand".to_owned(),
         _ => {
-            let hundreds = i / 100;
-            let tens = (i - hundreds * 100) / 10;
-            let ones = i - hundreds * 100 - tens * 10;
+            let thousands = i / 1000;
+            let hundreds =  (i - thousands * 1000) / 100;
+            let tens = (i - thousands * 1000 - hundreds * 100) / 10;
+            let ones = i - thousands * 1000 - hundreds * 100 - tens * 10;
             let mut ret: String = String::new();
+            if thousands > 0 {
+                ret += &(stringfy(thousands) + "Thousand");
+            }            
             if hundreds > 0 {
                 ret += &(stringfy(hundreds) + "Hundred");
             }
@@ -94,5 +98,9 @@ mod test_17 {
         let input1 = 1000;
         let res = stringfy(input1);
         assert_that(&res).is_equal_to("OneThousand".to_owned());   
+
+        let input1 = 3542;
+        let res = stringfy(input1);
+        assert_that(&res).is_equal_to("ThreeThousandFiveHundredAndFortyTwo".to_owned());   
     }
 }
