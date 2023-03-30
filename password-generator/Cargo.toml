@@ -1,0 +1,9 @@
+[package]
+name = "password-generator"
+version = "0.1.0"
+edition = "2021"
+authors = ["Sergio Rodrigues Giraldo sergiorgiraldo@gmail.com"]
+
+[dependencies]
+rand = "0.8.4"
+zxcvbn = "2.2.2"
